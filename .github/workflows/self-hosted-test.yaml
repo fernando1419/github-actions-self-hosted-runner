@@ -20,3 +20,20 @@ jobs:
           echo "🕓 Date: $(date)"
           echo "📄 Current Directory: $(pwd)"
           echo "🔍 Files List: $(ls -lath)"
+
+  build-docker:
+    runs-on: [self-hosted]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -t python-app:self-hosted-runner .
+
+      - name: Test Docker Health
+        run: |
+          docker run -d --name app-runner -p 5000:5000 python-app:self-hosted-runner
+          sleep 10
+          curl -f http://localhost:5000/health
+          docker stop app-runner && docker rm app-runner
