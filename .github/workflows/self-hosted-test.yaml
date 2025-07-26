@@ -1,0 +1,20 @@
+name: Test en Self-hosted
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test-local:
+    runs-on: [self-hosted]
+
+    steps:
+      - name: Clone Code
+        uses: actions/checkout@v4
+
+      - name: Info del sistema
+        run: |
+          echo "🏠 Hostname: $(hostname)"
+          echo "🔧 User: $(whoami)"
+          echo "🕓 Date: $(date)"
